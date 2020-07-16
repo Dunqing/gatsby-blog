@@ -6,11 +6,11 @@ import Navbar from "./navbar"
 import { useLayoutStyles } from "../hooks/layouts"
 import Sidebar from "./sidebar"
 import { useTheme } from "@material-ui/styles"
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import { useMediaQuery } from "@material-ui/core"
+import { graphql } from "gatsby"
 
-
-export type DispatchType = 'mobile' | 'pc' | 'reset'
+export type DispatchType = "mobile" | "pc" | "reset"
 
 export interface DispatchValue {
   type: DispatchType
@@ -18,48 +18,48 @@ export interface DispatchValue {
 }
 
 export interface DrawerState {
-  pc: boolean,
+  pc: boolean
   mobile: boolean
 }
 
 const initialDrawerState = {
   pc: true,
-  mobile: false
+  mobile: false,
 }
 
 export const drawerReducer = (state: DrawerState, action: DispatchValue) => {
   const { type, value } = action
   switch (type) {
-    case 'mobile':
+    case "mobile":
       return {
         ...state,
-        mobile: value
+        mobile: value,
       }
-    case 'pc':
+    case "pc":
       return {
         ...state,
-        pc: value
+        pc: value,
       }
-    case 'reset':
+    case "reset":
       return initialDrawerState
     default:
-      throw new Error('No such action type')
+      throw new Error("No such action type")
   }
 }
 
 const Layout: React.FC<{}> = ({ children }) => {
   const layoutClasses = useLayoutStyles()
   const [state, dispatch] = useReducer(drawerReducer, initialDrawerState)
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const theme = React.useMemo(
     () =>
       createMuiTheme({
         palette: {
-          type: prefersDarkMode ? 'dark' : 'light',
+          type: prefersDarkMode ? "dark" : "light",
         },
       }),
-    [prefersDarkMode],
-  );
+    [prefersDarkMode]
+  )
   return (
     <ThemeProvider theme={theme}>
       <div className={layoutClasses.root}>
@@ -67,9 +67,8 @@ const Layout: React.FC<{}> = ({ children }) => {
         <Navbar drawerState={state} drawerDispatch={dispatch}></Navbar>
         <Sidebar drawerState={state} drawerDispatch={dispatch}></Sidebar>
         <main className={layoutClasses.content}>
-          <div className={layoutClasses.toolbar}>
-          </div>
-          <Container fixed>{children}</Container>
+          <div className={layoutClasses.toolbar}></div>
+          <Container maxWidth="lg">{children}</Container>
         </main>
       </div>
     </ThemeProvider>
@@ -81,3 +80,9 @@ Layout.propTypes = {
 }
 
 export default Layout
+
+// export const query = graphql`
+//   query {
+
+//   }
+// `

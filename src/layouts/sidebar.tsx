@@ -5,13 +5,12 @@ import {
   makeStyles,
   useTheme,
 } from "@material-ui/core/styles"
-import clsx from 'clsx'
+import { graphql, useStaticQuery } from "gatsby"
+import Img from "gatsby-image"
+import clsx from "clsx"
 import Drawer from "@material-ui/core/Drawer"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
 import List from "@material-ui/core/List"
-import Hidden from '@material-ui/core/Hidden';
+import Hidden from "@material-ui/core/Hidden"
 import Divider from "@material-ui/core/Divider"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
@@ -22,14 +21,31 @@ import { DispatchValue, DrawerState, DispatchType } from "./index"
 import { useLayoutStyles } from "../hooks/layouts"
 
 interface SidebarProps {
-  drawerState: DrawerState,
+  drawerState: DrawerState
   drawerDispatch: Dispatch<DispatchValue>
 }
 
-const Profile = () => (
-  <div className={layoutClasses.toolbar}>
-  </div>
-)
+const Profile = () => {
+  const layoutClasses = useLayoutStyles()
+  const data = useStaticQuery(graphql`
+    query {
+      placeholderImage: file(relativePath: { eq: "sidebar.jpg" }) {
+        childImageSharp {
+          fluid(maxWidth: 240) {
+            ...GatsbyImageSharpFluid
+          }
+        }
+      }
+    }
+  `)
+  return (
+    <>
+      <div className={layoutClasses.toolbar}>
+        <Img fluid={data.placeholderImage.childImageSharp.fluid}></Img>
+      </div>
+    </>
+  )
+}
 
 const DrawerContent = () => (
   <>
@@ -57,25 +73,24 @@ const DrawerContent = () => (
   </>
 )
 
-
-const Sidebar: React.FC<SidebarProps> = (props) => {
+const Sidebar: React.FC<SidebarProps> = props => {
   const { drawerState, drawerDispatch } = props
   const theme = useTheme()
   const layoutClasses = useLayoutStyles()
 
-  console.log(theme.palette)
-
-  const toggleDrawer = (type: DispatchType) => (event: React.KeyboardEvent | React.MouseEvent) => {
+  const toggleDrawer = (type: DispatchType) => (
+    event: React.KeyboardEvent | React.MouseEvent
+  ) => {
     if (
-      event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
+      event.type === "keydown" &&
+      ((event as React.KeyboardEvent).key === "Tab" ||
+        (event as React.KeyboardEvent).key === "Shift")
     ) {
       return
     }
     drawerDispatch({
       type,
-      value: false
+      value: false,
     })
   }
 
@@ -84,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
       <Hidden smUp implementation="css">
         <Drawer
           open={drawerState.mobile}
-          onClose={toggleDrawer('mobile')}
+          onClose={toggleDrawer("mobile")}
           className={clsx(layoutClasses.drawer, {
             // [layoutClasses.drawerOpen]: drawerState,
             // [layoutClasses.drawerClose]: !drawerState,
@@ -96,8 +111,8 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             }),
           }}
         >
-          <Profile layoutClasses={layoutClasses}></Profile>
-          <DrawerContent ></DrawerContent>
+          <Profile></Profile>
+          <DrawerContent></DrawerContent>
         </Drawer>
       </Hidden>
       <Hidden xsDown implementation="css">
@@ -114,7 +129,7 @@ const Sidebar: React.FC<SidebarProps> = (props) => {
             }),
           }}
         >
-          <Profile layoutClasses={layoutClasses}></Profile>
+          <Profile></Profile>
           <DrawerContent></DrawerContent>
         </Drawer>
       </Hidden>
