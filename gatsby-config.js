@@ -10,7 +10,13 @@ module.exports = {
       options: {
         apiURL: `http://127.0.0.1:2337`,
         queryLimit: 1000, // Default to 100
-        contentTypes: ["school", "article"],
+        contentTypes: [
+          "school",
+          "article",
+          "tag",
+          "category",
+          "collection_tag",
+        ],
         // Possibility to login with a strapi user, when content types are not publically available (optional).
         loginData: {
           identifier: "gatsby-admin",
