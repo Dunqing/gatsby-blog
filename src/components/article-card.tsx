@@ -9,7 +9,6 @@ import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Chip from "@material-ui/core/Chip"
 import Paper from "@material-ui/core/Paper"
-import Icon from "@material-ui/core/Icon"
 
 import TagFacesIcon from "@material-ui/icons/TagFaces"
 import { graphql, Link } from "gatsby"
@@ -70,8 +69,7 @@ const Tags = () => {
         let icon
 
         if (data.label === "React") {
-          // icon = <TagFacesIcon />
-          icon = <Icon>star</Icon>
+          icon = <TagFacesIcon />
         }
 
         return (
