@@ -71,6 +71,7 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
+      width: "100%",
       padding: theme.spacing(2, 0),
     },
   })
