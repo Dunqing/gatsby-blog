@@ -106,16 +106,6 @@ const ArticleCard: React.FC<ArticleCardProps> = props => {
           {article.node.banner && (
             <Img fluid={article.node.banner.childImageSharp.fluid}></Img>
           )}
-          <CardContent>
-            <Typography
-              className={classes.content}
-              variant="body2"
-              color="textSecondary"
-              component="p"
-            >
-              {article.node.content}
-            </Typography>
-          </CardContent>
         </CardActionArea>
       </Link>
       <CardActions>
