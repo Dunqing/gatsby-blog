@@ -74,7 +74,12 @@ const ArticleTags: React.FC<ArticleTagsProps> = props => {
 
         return (
           <li key={data.id}>
-            <Chip icon={icon} label={data.name} className={classes.chip} />
+            <Chip
+              size="small"
+              icon={icon}
+              label={data.name}
+              className={classes.chip}
+            />
           </li>
         )
       })}
