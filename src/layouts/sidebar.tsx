@@ -5,7 +5,7 @@ import {
   makeStyles,
   useTheme,
 } from "@material-ui/core/styles"
-import { graphql, useStaticQuery } from "gatsby"
+import { graphql, Link, useStaticQuery } from "gatsby"
 import Img from "gatsby-image"
 import clsx from "clsx"
 import Drawer from "@material-ui/core/Drawer"
@@ -17,6 +17,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import InboxIcon from "@material-ui/icons/MoveToInbox"
 import MailIcon from "@material-ui/icons/Mail"
+import Face from "@material-ui/icons/Face"
+import CategoryIcon from "@material-ui/icons/Category"
+import MenuBookIcon from "@material-ui/icons/MenuBook"
+import TagFacesIcon from "@material-ui/icons/TagFaces"
+import GithubIcon from "@material-ui/icons/GitHub"
 import { DispatchValue, DrawerState, DispatchType } from "./index"
 import { useLayoutStyles } from "../hooks/layouts"
 
@@ -47,31 +52,53 @@ const Profile = () => {
   )
 }
 
-const DrawerContent = () => (
-  <>
-    <List>
-      {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-        <ListItem button key={text}>
+const DrawerContent = () => {
+  const githubUrl = "https://github.com/1247748612/gatsby-blog"
+  const PageMenuList = [
+    {
+      path: "/articles",
+      icon: <MenuBookIcon></MenuBookIcon>,
+      text: "文章",
+    },
+    {
+      path: "/categories",
+      icon: <CategoryIcon></CategoryIcon>,
+      text: "分类",
+    },
+    {
+      path: "/tags",
+      icon: <TagFacesIcon></TagFacesIcon>,
+      text: "标签",
+    },
+  ]
+  return (
+    <>
+      <List>
+        {PageMenuList.map(menu => (
+          <Link key={menu.path} to={menu.path}>
+            <ListItem button>
+              <ListItemIcon>{menu.icon}</ListItemIcon>
+              <ListItemText primary={menu.text} />
+            </ListItem>
+          </Link>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        <ListItem button>
           <ListItemIcon>
-            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            <GithubIcon></GithubIcon>
           </ListItemIcon>
-          <ListItemText primary={text} />
+          <ListItemText>
+            <a target="_blank" href={githubUrl}>
+              github地址
+            </a>
+          </ListItemText>
         </ListItem>
-      ))}
-    </List>
-    <Divider />
-    <List>
-      {["All mail", "Trash", "Spam"].map((text, index) => (
-        <ListItem button key={text}>
-          <ListItemIcon>
-            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-          </ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItem>
-      ))}
-    </List>
-  </>
-)
+      </List>
+    </>
+  )
+}
 
 const Sidebar: React.FC<SidebarProps> = props => {
   const { drawerState, drawerDispatch } = props
