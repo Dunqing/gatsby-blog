@@ -15,7 +15,7 @@ module.exports = {
           "article",
           "tag",
           "category",
-          "collection_tag",
+          // "collection_tag",
         ],
         // Possibility to login with a strapi user, when content types are not publically available (optional).
         loginData: {

@@ -5,15 +5,18 @@ import CardActionArea from "@material-ui/core/CardActionArea"
 import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
 import CardMedia from "@material-ui/core/CardMedia"
+import CardHeader from "@material-ui/core/CardHeader"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Chip from "@material-ui/core/Chip"
 import Paper from "@material-ui/core/Paper"
 import Icon from "@material-ui/core/Icon"
-
-import TagFacesIcon from "@material-ui/icons/TagFaces"
 import { graphql, Link } from "gatsby"
-import { StrapiArticle } from "../interfaces/article.interface"
+import {
+  StrapiArticle,
+  StrapiArticles,
+  StrapiTags,
+} from "../interfaces/article.interface"
 import Img from "gatsby-image"
 
 interface ChipData {
@@ -31,7 +34,7 @@ const useStyles = makeStyles(theme =>
       overflow: "hidden",
       "text-overflow": "ellipsis",
       display: "-webkit-box",
-      "-webkit-line-clamp": 3,
+      "-webkit-line-clamp": 2,
       "-webkit-box-orient": "vertical",
     },
   })
@@ -41,7 +44,7 @@ const useTagsStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: "flex",
-      justifyContent: "center",
+      // justifyContent: "center",
       flexWrap: "wrap",
       listStyle: "none",
       width: "100%",
@@ -54,29 +57,24 @@ const useTagsStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const Tags = () => {
+interface ArticleTagsProps {
+  tags: StrapiTags[]
+}
+
+const ArticleTags: React.FC<ArticleTagsProps> = props => {
+  const { tags } = props
   const classes = useTagsStyles()
-  const [chipData, setChipData] = React.useState<ChipData[]>([
-    { key: 0, label: "Angular" },
-    { key: 1, label: "jQuery" },
-    { key: 2, label: "Polymer" },
-    { key: 3, label: "React" },
-    { key: 4, label: "Vue.js" },
-  ])
 
   return (
     <Paper component="ul" className={classes.root}>
-      {chipData.map(data => {
+      {tags.map(data => {
         let icon
 
-        if (data.label === "React") {
-          // icon = <TagFacesIcon />
-          icon = <Icon>star</Icon>
-        }
+        icon = <Icon>face</Icon>
 
         return (
-          <li key={data.key}>
-            <Chip icon={icon} label={data.label} className={classes.chip} />
+          <li key={data.id}>
+            <Chip icon={icon} label={data.name} className={classes.chip} />
           </li>
         )
       })}
@@ -89,24 +87,26 @@ const Tags = () => {
 // }
 
 interface ArticleCardProps {
-  article: StrapiArticle
+  article: StrapiArticles
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = props => {
   const { article } = props
+  const { tags } = article.node
   const classes = useStyles()
 
   return (
     <Card className={classes.cardRoot}>
-      <Link to="/using-typescript">
+      <Link to={`/article/${article.node.strapiId}`}>
+        <CardHeader
+          title={article.node.title}
+          subheader={`Release ${article.node.createdAt}`}
+        />
         <CardActionArea>
           {article.node.banner && (
             <Img fluid={article.node.banner.childImageSharp.fluid}></Img>
           )}
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {article.node.title}
-            </Typography>
             <Typography
               className={classes.content}
               variant="body2"
@@ -119,7 +119,7 @@ const ArticleCard: React.FC<ArticleCardProps> = props => {
         </CardActionArea>
       </Link>
       <CardActions>
-        <Tags></Tags>
+        <ArticleTags tags={tags}></ArticleTags>
       </CardActions>
     </Card>
   )

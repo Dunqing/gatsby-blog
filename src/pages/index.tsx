@@ -55,9 +55,15 @@ export const query = graphql`
     allStrapiArticle(limit: 10) {
       edges {
         node {
-          title
           strapiId
+          title
           content
+          tags {
+            name
+            id
+            icon
+          }
+          createdAt(formatString: "Y/MM/DD")
           banner {
             childImageSharp {
               fluid {
