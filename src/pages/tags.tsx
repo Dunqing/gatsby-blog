@@ -14,12 +14,13 @@ import {
   IconButton,
   Typography,
 } from "@material-ui/core"
-import { StaticQuery, graphql, Link } from "gatsby"
+import { StaticQuery, graphql, Link, PageProps } from "gatsby"
 import { TagArticle, TagQueryPageData } from "../interfaces/tags.interface"
 import { ExpandLess, ExpandMore, StarBorder } from "@material-ui/icons"
 import TagFacesIcon from "@material-ui/icons/TagFaces"
 import NavigateNext from "@material-ui/icons/NavigateNext"
 import LinkIcon from "@material-ui/icons/Link"
+import TagHeader from "../components/tag-header"
 
 const useTagStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,7 +72,11 @@ const TagArticleChildren: React.FC<TagArticleChildrenProps> = ({
   )
 }
 
-const tagRender = (data: TagQueryPageData) => {
+interface TagListProps {
+  data: TagQueryPageData
+}
+
+const TagList: React.FC<TagListProps> = ({ data }) => {
   const classes = useTagStyles()
   const [key, setKey] = useState(null)
   const handleCollapse = (e: Event, openKey: string) => {
@@ -91,9 +96,11 @@ const tagRender = (data: TagQueryPageData) => {
               <ListItemIcon>
                 <TagFacesIcon />
               </ListItemIcon>
+
               <ListItemText>
                 {tag.node.name}（{tag.node.articles.length}）
               </ListItemText>
+
               <ListItemSecondaryAction>
                 {tag.node.articles.length && (
                   <IconButton
@@ -120,49 +127,34 @@ const tagRender = (data: TagQueryPageData) => {
     </List>
   )
 }
-const TagList: React.FC<{}> = () => {
-  return (
-    <StaticQuery
-      query={graphql`
-        query strapiTag {
-          allStrapiTag {
-            edges {
-              node {
-                icon
-                strapiId
-                name
-                articles {
-                  id
-                  title
-                }
-              }
-            }
-          }
-        }
-      `}
-      render={tagRender}
-    ></StaticQuery>
-    //
-  )
-}
 
-interface TagHeaderProps {}
-
-const TagHeader: React.FC<TagHeaderProps> = () => {
-  return (
-    <>
-      <Typography variant="h4">博客标签</Typography>
-    </>
-  )
-}
-
-const Tags: React.FC<{}> = () => {
+const Tags: React.FC<PageProps<TagQueryPageData>> = ({ data }) => {
+  const title = "全部标签"
+  const subtitle = `标签总数量(${data.allStrapiTag.edges.length})`
   return (
     <Layout>
-      <TagHeader></TagHeader>
-      <TagList></TagList>
+      <TagHeader title={title} subtitle={subtitle}></TagHeader>
+      <TagList data={data}></TagList>
     </Layout>
   )
 }
 
 export default Tags
+
+export const query = graphql`
+  query strapiTag {
+    allStrapiTag {
+      edges {
+        node {
+          icon
+          strapiId
+          name
+          articles {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+`

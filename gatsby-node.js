@@ -45,6 +45,38 @@ const getAllArticle = (graphql, actions) =>
     })
   })
 
+const getAllTag = (graphql, actions) =>
+  makeRequest(
+    graphql,
+    `
+      query {
+        allStrapiTag {
+          edges {
+            node {
+              strapiId
+              name
+            }
+          }
+        }
+      }
+    `
+  ).then(result => {
+    result.data.allStrapiTag.edges.forEach(edge => {
+      const { strapiId, name } = edge.node
+      actions.createPage({
+        path: `tag/${strapiId}`,
+        component: require.resolve(`./src/templates/tag-template.tsx`),
+        context: {
+          name,
+          strapiId,
+        },
+      })
+    })
+  })
+
 exports.createPages = async function ({ actions, graphql }) {
-  return Promise.all([getAllArticle(graphql, actions)])
+  return Promise.all([
+    getAllArticle(graphql, actions),
+    getAllTag(graphql, actions),
+  ])
 }
