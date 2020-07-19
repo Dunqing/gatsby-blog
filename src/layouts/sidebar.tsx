@@ -45,9 +45,9 @@ const Profile = () => {
   `)
   return (
     <>
-      <div className={layoutClasses.toolbar}>
+      <Link to="/" className={layoutClasses.toolbar}>
         <Img fluid={data.placeholderImage.childImageSharp.fluid}></Img>
-      </div>
+      </Link>
     </>
   )
 }
