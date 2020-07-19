@@ -12,6 +12,7 @@ import Chip from "@material-ui/core/Chip"
 import Paper from "@material-ui/core/Paper"
 import Icon from "@material-ui/core/Icon"
 import { graphql, Link } from "gatsby"
+import LoyaltyRoundedIcon from "@material-ui/icons/LoyaltyRounded"
 import {
   StrapiArticle,
   StrapiArticles,
@@ -67,20 +68,22 @@ const ArticleTags: React.FC<ArticleTagsProps> = props => {
 
   return (
     <Paper component="ul" className={classes.root}>
-      {tags.map(data => {
+      {tags.map(tag => {
         let icon
 
-        icon = <Icon>face</Icon>
+        // icon = <Icon>Loyalty</Icon>
+        icon = <LoyaltyRoundedIcon />
 
         return (
-          <li key={data.id}>
+          <Link to={`/tag/${tag.id}`} key={tag.id}>
             <Chip
+              color="primary"
               size="small"
               icon={icon}
-              label={data.name}
+              label={tag.name}
               className={classes.chip}
             />
-          </li>
+          </Link>
         )
       })}
     </Paper>
@@ -113,9 +116,11 @@ const ArticleCard: React.FC<ArticleCardProps> = props => {
           )}
         </CardActionArea>
       </Link>
-      <CardActions>
-        <ArticleTags tags={tags}></ArticleTags>
-      </CardActions>
+      {tags && tags.length > 0 && (
+        <CardActions>
+          <ArticleTags tags={tags}></ArticleTags>
+        </CardActions>
+      )}
     </Card>
   )
 }
