@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography"
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles"
 import ArticleCard from "../components/article-card"
 import { QueryPageData } from "../interfaces/article.interface"
+import Grid from "@material-ui/core/Grid"
 
 const useArticleStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,19 +32,13 @@ const IndexPage: React.FC<PageProps<QueryPageData>> = ({ data }) => {
   return (
     <Layout>
       <SEO title="Home" />
-      {allStrapiArticle.edges.map(articleData => (
-        <ArticleCard
-          key={articleData.node.strapiId}
-          article={articleData}
-        ></ArticleCard>
-      ))}
-      <p>Welcome to your new Gatsby site.</p>
-      <p>Now go build something great.</p>
-      <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-        <Image />
-      </div>
-      <Link to="/page-2/">Go to page 2</Link> <br />
-      <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
+      <Grid spacing={2} container>
+        {allStrapiArticle.edges.map(articleData => (
+          <Grid xs={12} item key={articleData.node.strapiId}>
+            <ArticleCard article={articleData}></ArticleCard>
+          </Grid>
+        ))}
+      </Grid>
     </Layout>
   )
 }

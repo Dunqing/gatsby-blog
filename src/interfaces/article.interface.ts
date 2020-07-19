@@ -2,7 +2,7 @@ export interface StrapiArticle {
   title: string
   strapiId: string
   content: string
-  tags: StrapiTags[]
+  tags: StrapiArticleTag[]
   createdAt: string
   updatedAt: string
   banner: {
@@ -16,7 +16,7 @@ export interface StrapiArticles {
   node: StrapiArticle
 }
 
-export interface StrapiTags {
+export interface StrapiArticleTag {
   name: string
   id: string
   icon: string

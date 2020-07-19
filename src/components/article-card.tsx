@@ -16,7 +16,7 @@ import LoyaltyRoundedIcon from "@material-ui/icons/LoyaltyRounded"
 import {
   StrapiArticle,
   StrapiArticles,
-  StrapiTags,
+  StrapiArticleTag,
 } from "../interfaces/article.interface"
 import Img from "gatsby-image"
 
@@ -58,7 +58,7 @@ const useTagsStyles = makeStyles((theme: Theme) =>
 )
 
 interface ArticleTagsProps {
-  tags: StrapiTags[]
+  tags: StrapiArticleTag[]
 }
 
 const ArticleTags: React.FC<ArticleTagsProps> = props => {
@@ -81,6 +81,7 @@ const ArticleTags: React.FC<ArticleTagsProps> = props => {
               icon={icon}
               label={tag.name}
               className={classes.chip}
+              clickable
             />
           </Link>
         )
