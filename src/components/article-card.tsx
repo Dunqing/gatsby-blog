@@ -29,7 +29,6 @@ const useStyles = makeStyles(theme =>
   createStyles({
     cardRoot: {
       maxWidth: "100%",
-      margin: theme.spacing(0, 0, 3, 0),
     },
     content: {
       overflow: "hidden",
