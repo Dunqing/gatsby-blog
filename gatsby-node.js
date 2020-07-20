@@ -30,17 +30,27 @@ const getAllArticle = (graphql, actions) =>
             strapiId
             title
           }
+          next {
+            title
+            strapiId
+          }
+          previous {
+            title
+            strapiId
+          }
         }
-      }
+      } 
     }
   `
   ).then(result => {
     result.data.allStrapiArticle.edges.forEach(edge => {
       const strapiId = edge.node.strapiId
+      const { next, previous } = edge
+      console.log(strapiId, next, previous)
       actions.createPage({
         path: `article/${strapiId}`,
         component: require.resolve(`./src/templates/article-template.tsx`),
-        context: { strapiId },
+        context: { strapiId, next, previous },
       })
     })
   })
